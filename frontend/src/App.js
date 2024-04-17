@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
+import LoginForm from './components/LoginForm';
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 function App() {
 
@@ -9,15 +11,22 @@ function App() {
   const toggleMode = () => {
     if(mode === 'light') {
       setMode('dark');
+      document.body.style.backgroundColor = '#042743';
     }
     else {
       setMode('light');
+      document.body.style.backgroundColor = '#fff';
     }
   }
 
   return (
     <>
-      <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode}/>
+      <Router>
+        <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode}/>
+        <Routes>
+          <Route path='/login' element={<LoginForm mode={mode}/>} />
+        </Routes>
+      </Router>
     </>
   );
 }
