@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :tasks
       resources :projects
       resources :users
+      devise_for :users
     end
   end
 end
