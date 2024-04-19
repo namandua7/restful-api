@@ -15,6 +15,9 @@ export default function LoginForm(props) {
         { email, password }
       );
       console.log(response.data);
+      localStorage.setItem('token', response.data.token);
+      props.setToken(response.data.token);
+      props.setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
       console.error('Error submitting form:', error);

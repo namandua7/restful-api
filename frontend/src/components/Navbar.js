@@ -1,7 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Navbar(props) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    props.setToken('');
+    props.setIsLoggedIn(false);
+    navigate('/login');
+  };
   return (
     <nav className={`navbar navbar-expand-lg navbar-${props.mode} bg-${props.mode}`}>
       <div className="container-fluid">
@@ -37,7 +45,11 @@ export default function Navbar(props) {
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button className="btn btn-outline-success" type="submit">Search</button>
           </form>
-          <Link to="/login" className='btn btn-primary'>Login</Link>
+          {props.isLoggedIn ? (
+            <button onClick={handleLogout} className='btn btn-primary'>Logout</button>
+          ) : (
+            <Link to="/login" className='btn btn-primary'>Login</Link>
+          )}
         </div>
       </div>
     </nav>
