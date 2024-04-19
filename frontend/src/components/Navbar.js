@@ -8,6 +8,7 @@ export default function Navbar(props) {
     localStorage.removeItem('token');
     props.setToken('');
     props.setIsLoggedIn(false);
+    props.setUser('');
     navigate('/login');
   };
   return (
@@ -23,7 +24,7 @@ export default function Navbar(props) {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Link</a>
+              <Link className="nav-link" to="/projects">Projects</Link>
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,6 +46,11 @@ export default function Navbar(props) {
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button className="btn btn-outline-success" type="submit">Search</button>
           </form>
+          {props.isLoggedIn ? (
+              <p className={`mx-4 my-2 text-${props.mode === 'dark' ? 'light' : 'dark'}`}>{props.user.name}</p>
+            ) : (
+            <></>
+          )}
           {props.isLoggedIn ? (
             <button onClick={handleLogout} className='btn btn-primary'>Logout</button>
           ) : (
