@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import LoginForm from './components/LoginForm';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import KanbanBoard from './components/KanbanBoard'; 
 
 function App() {
   const [mode, setMode] = useState(() => {
@@ -27,12 +28,13 @@ function App() {
   const toggleMode = () => {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
-
+  const backgroundImageUrl = 'https://greggigon.com/wp-content/uploads/2013/05/kanban-board-dark.jpg';
   return (
     <>
       <Router>
         <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} />
         <Routes>
+          <Route path='/' element={<KanbanBoard mode={mode} backgroundImage={backgroundImageUrl}/>}/>
           <Route path='/login' element={<LoginForm mode={mode} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} />} />
         </Routes>
       </Router>
