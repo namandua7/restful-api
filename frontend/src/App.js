@@ -5,8 +5,11 @@ import LoginForm from './components/LoginForm';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 function App() {
+  const [mode, setMode] = useState(() => {
+    const storedMode = localStorage.getItem('mode');
+    return storedMode || 'light';
+  });
 
-  const [mode, setMode] = useState('light');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
@@ -16,23 +19,21 @@ function App() {
     }
   }, [token]);
 
+  useEffect(() => {
+    localStorage.setItem('mode', mode);
+    document.body.style.backgroundColor = mode === 'light' ? '#fff' : '#042743';
+  }, [mode]);
+
   const toggleMode = () => {
-    if(mode === 'light') {
-      setMode('dark');
-      document.body.style.backgroundColor = '#042743';
-    }
-    else {
-      setMode('light');
-      document.body.style.backgroundColor = '#fff';
-    }
-  }
+    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+  };
 
   return (
     <>
       <Router>
-        <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken}/>
+        <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} />
         <Routes>
-          <Route path='/login' element={<LoginForm mode={mode} setIsLoggedIn={setIsLoggedIn} setToken={setToken}/>} />
+          <Route path='/login' element={<LoginForm mode={mode} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} />} />
         </Routes>
       </Router>
     </>

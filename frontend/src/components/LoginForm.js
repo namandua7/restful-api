@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,6 +6,13 @@ export default function LoginForm(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (props.token) {
+      props.setIsLoggedIn(true);
+      navigate('/');
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
