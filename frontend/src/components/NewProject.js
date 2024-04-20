@@ -14,7 +14,7 @@ export default function NewProject(props) {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/v1/users/${user_id}/projects`,
-        { name, description }
+        { name, description, user_id }
       );
       console.log(response.data);
       navigate('/projects');

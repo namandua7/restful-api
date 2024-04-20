@@ -11,11 +11,11 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
-    if @project.save
-      render json: @project, status: :created
+    project = Project.new(project_params)
+    if project.save
+      render json: project, status: :created
     else
-      render json: @project.errors, status: :unprocessable_entity
+      render json: { error: project.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :description, :tasks)
+    params.require(:project).permit(:name, :description, :tasks_count, :user_id)
   end
 
 end
