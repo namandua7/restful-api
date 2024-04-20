@@ -22,7 +22,7 @@ export default function LoginForm(props) {
         { email, password }
       );
       console.log(response.data);
-      props.setUser(response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
       props.setToken(response.data.token);
       props.setIsLoggedIn(true);

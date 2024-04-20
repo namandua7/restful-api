@@ -47,7 +47,7 @@ export default function Navbar(props) {
             <button className="btn btn-outline-success" type="submit">Search</button>
           </form>
           {props.isLoggedIn ? (
-              <p className={`mx-4 my-2 text-${props.mode === 'dark' ? 'light' : 'dark'}`}>{props.user.name}</p>
+              <p className={`mx-4 my-2 text-${props.mode === 'dark' ? 'light' : 'dark'}`}>{JSON.parse(localStorage.getItem('user')).name}</p>
             ) : (
             <></>
           )}
