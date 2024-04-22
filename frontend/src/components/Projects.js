@@ -25,6 +25,24 @@ export default function Projects(props) {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`);
+      fetchProjects();
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
+
+  const handleUpdate = (id, name, description) => {
+    localStorage.setItem('project', JSON.stringify({ id, name, description }));
+    navigate(`/projects/${id}/edit`);
+  };
+
+  const handleView = (id) => {
+    navigate(`/projects/${id}`);
+  };
+
   return (
     <>
       <Link to={"/projects/new"}>
@@ -48,7 +66,11 @@ export default function Projects(props) {
                 <th scope="row">{index + 1}</th>
                 <td>{project.name}</td>
                 <td>{project.description}</td>
-                <td>{project.user_id}</td>
+                <td>
+                  <button className="btn btn-info" onClick={() => handleView(project.id)}>View</button>
+                  <button className="mx-3 btn btn-secondary" onClick={() => handleUpdate(project.id, project.name, project.description)}>Update</button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(project.id)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
