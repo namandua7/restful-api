@@ -1,7 +1,8 @@
 class Api::V1::BoardsController < ApplicationController
 
   def index
-    @boards = Board.all
+    project = Project.find(params[:project_id])
+    @boards = project.boards.all
     render json: @boards
   end
 
