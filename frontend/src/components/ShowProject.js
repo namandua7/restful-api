@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ShowProject(props) {
   return (
+    <>
     <div className={`my-4 text-${props.mode === 'light' ? 'dark' : 'light'}`}>
       <div className="px-4 sm:px-0">
         <h3 className="text-base font-semibold leading-7 text-gray-900">Project Information</h3>
@@ -33,5 +35,7 @@ export default function ShowProject(props) {
         </dl>
       </div>
     </div>
+    <Link className="mx-4 btn btn-primary" to={`/projects/${JSON.parse(localStorage.getItem('project')).id}/boards`}>Boards</Link>
+    </>
   )
 }

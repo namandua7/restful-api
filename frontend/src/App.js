@@ -8,6 +8,8 @@ import Projects from './components/Projects';
 import NewProject from './components/NewProject';
 import EditProject from './components/EditProject';
 import ShowProject from './components/ShowProject';
+import Boards from './components/Boards';
+import NewBoard from './components/NewBoard';
 
 function App() {
   const [mode, setMode] = useState(() => {
@@ -39,6 +41,8 @@ function App() {
       <Router>
         <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} user={user} setUser={setUser} />
         <Routes>
+          <Route path='/projects/:id/boards/new' element={<NewBoard mode={mode}/>} />
+          <Route path='/projects/:id/boards' element={<Boards mode={mode}/>} />
           <Route path='/projects/:id' element={<ShowProject mode={mode}/>} />
           <Route path='/projects/:id/edit' element={<EditProject mode={mode}/>} />
           <Route path='projects/new' element={<NewProject mode={mode}/>} />

@@ -74,7 +74,7 @@ export default function Projects(props) {
       {currentProjects.length === 0 ? (
         <h1 style={{ position: "relative" }} className={`text-${props.mode === 'light' ? 'dark' : 'light'} text-center`}>No projects found</h1>
       ) : (
-        <table className={`my-2 table table-${props.mode === "dark" ? "" : "borderless"} table-${props.mode === 'dark' ? 'dark' : 'light'}`}>
+        <table className={`my-4 table table-${props.mode === "dark" ? "" : "borderless"} table-${props.mode === 'dark' ? 'dark' : 'light'}`}>
           <thead>
             <tr>
               <th scope="col">S.No.</th>
