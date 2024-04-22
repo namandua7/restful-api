@@ -27,14 +27,33 @@ export default function Projects(props) {
 
   return (
     <>
-    <Link to={"/projects/new"}><button type="button" style={{position:"absolute"}} className="my-4 mx-5 btn btn-primary">+ New</button></Link>
-     {projects.length === 0 ? (
-        <h1 className={`my-5 text-${props.mode === 'light' ? 'dark' : 'light'} text-center`}>No projects found</h1>
+      <Link to={"/projects/new"}>
+        <button type="button" className="mx-3 my-4 mr-5 btn btn-primary">+ New</button>
+      </Link>
+      {projects.length === 0 ? (
+        <h1 style={{ position: "relative" }} className={`text-${props.mode === 'light' ? 'dark' : 'light'} text-center`}>No projects found</h1>
       ) : (
-        <ul>
-          {}
-        </ul>
-      )} 
+        <table className={`my-2 table table-${props.mode === "dark" ? "" : "borderless"} table-${props.mode === 'dark' ? 'dark' : 'light'}`}>
+          <thead>
+            <tr>
+              <th scope="col">S.No.</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="table-group-divider">
+            {projects.map((project, index) => (
+              <tr key={project.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{project.name}</td>
+                <td>{project.description}</td>
+                <td>{project.user_id}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   )
 }
