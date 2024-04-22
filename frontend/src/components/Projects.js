@@ -34,13 +34,26 @@ export default function Projects(props) {
     }
   };
 
-  const handleUpdate = (id, name, description) => {
-    localStorage.setItem('project', JSON.stringify({ id, name, description }));
-    navigate(`/projects/${id}/edit`);
+  const handleUpdate = (id) => {
+    axios.get(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`)
+      .then(response => {
+        localStorage.setItem('project', JSON.stringify(response.data));
+        navigate(`/projects/${id}/edit`);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   const handleView = (id) => {
-    navigate(`/projects/${id}`);
+    axios.get(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`)
+      .then(response => {
+        localStorage.setItem('project', JSON.stringify(response.data));
+        navigate(`/projects/${id}`);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   return (
@@ -65,10 +78,10 @@ export default function Projects(props) {
               <tr key={project.id}>
                 <th scope="row">{index + 1}</th>
                 <td>{project.name}</td>
-                <td>{project.description}</td>
+                <td>{project.description.split(' ').slice(0, 11).join(' ')}...</td>
                 <td>
                   <button className="btn btn-info" onClick={() => handleView(project.id)}>View</button>
-                  <button className="mx-3 btn btn-secondary" onClick={() => handleUpdate(project.id, project.name, project.description)}>Update</button>
+                  <button className="mx-3 btn btn-secondary" onClick={() => handleUpdate(project.id)}>Update</button>
                   <button className="btn btn-danger" onClick={() => handleDelete(project.id)}>Delete</button>
                 </td>
               </tr>
