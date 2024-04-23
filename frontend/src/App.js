@@ -41,7 +41,7 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar title="Kanban Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} user={user} setUser={setUser} />
+        <Navbar title="Jira Board" mode={mode} toggleMode={toggleMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} user={user} setUser={setUser} />
         <Routes>
           <Route path='/projects/:id/boards/new' element={<NewBoard mode={mode}/>} />
           <Route path='/projects/:id/boards' element={<Boards mode={mode}/>} />

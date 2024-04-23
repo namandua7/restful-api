@@ -2,3 +2,10 @@
   background-size: cover;
   background-position: center;
 }
+.plus_container {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-close {
+  transform: rotate(45deg);
+}

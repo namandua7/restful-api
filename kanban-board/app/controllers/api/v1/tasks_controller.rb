@@ -1,7 +1,8 @@
 class Api::V1::TasksController < ApplicationController
 
   def index
-    @tasks = Task.all
+    board = Board.find(params[:board_id])
+    @tasks = board.tasks.all
     render json: @tasks
   end
 
@@ -31,7 +32,7 @@ class Api::V1::TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :description)
+    params.require(:task).permit(:title, :description, :board_id, :created_by)
   end
 
 end
