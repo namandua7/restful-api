@@ -10,6 +10,8 @@ import EditProject from './components/EditProject';
 import ShowProject from './components/ShowProject';
 import Boards from './components/Boards';
 import NewBoard from './components/NewBoard';
+import KanbanBoardImage1 from './images/KanbanBoardImage1.jpg';
+import KanbanBoardImage2 from './images/KanbanBoardImage2.jpg';
 
 function App() {
   const [mode, setMode] = useState(() => {
@@ -35,7 +37,7 @@ function App() {
   const toggleMode = () => {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
-  const backgroundImageUrl = 'https://greggigon.com/wp-content/uploads/2013/05/kanban-board-dark.jpg';
+  const backgroundImageUrl = 'src/images/Blue Dark Professional Geometric Business Project Presentation .jpg';
   return (
     <>
       <Router>
@@ -47,7 +49,7 @@ function App() {
           <Route path='/projects/:id/edit' element={<EditProject mode={mode}/>} />
           <Route path='projects/new' element={<NewProject mode={mode}/>} />
           <Route path='/projects' element={<Projects user={user} token={token} mode={mode}/>}/>
-          <Route path='/' element={<KanbanBoard mode={mode} backgroundImage={backgroundImageUrl}/>}/>
+          <Route path='/' element={<KanbanBoard mode={mode} backgroundImage={`${mode === 'light' ? KanbanBoardImage1 : KanbanBoardImage2}`}/>}/>
           <Route path='/login' element={<LoginForm mode={mode} setIsLoggedIn={setIsLoggedIn} token={token} setToken={setToken} setUser={setUser} />} />
         </Routes>
       </Router>
