@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-export default function Boards() {
+export default function Boards(props) {
   const projectId = JSON.parse(localStorage.getItem('project')).id;
   const user_id = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
   const [title, setTitle] = useState('');
@@ -125,7 +125,7 @@ export default function Boards() {
         <Link to={`/projects/${projectId}/boards/new`} className="mr-auto">
           <button type="button" className="mx-3 my-4 btn btn-primary">+ New</button>
         </Link>
-        <h1 style={{ margin: "0 auto" }} className={`text-center text-${mode==='light'?'dark':'light'}`}>{JSON.parse(localStorage.getItem('project')).name}</h1>
+        <h1 style={{ margin: "0 auto" }} className={`text-center text-${props.mode==='light'?'dark':'light'}`}>{JSON.parse(localStorage.getItem('project')).name}</h1>
       </div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="row mx-4">
@@ -181,7 +181,17 @@ export default function Boards() {
                                   {...provided.dragHandleProps}
                                 >
                                   <div className="card mb-3 mx-2">
-                                    <b><div className="card-header">{task.title}</div></b>
+                                  <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><b><div className="card-header">{task.title}</div></b></Link>
+                                    <div class="offcanvas offcanvas-end w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                                      <div class="offcanvas-header">
+                                        <h5 class="offcanvas-title" id="offcanvasRightLabel">{task.title}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                      </div>
+                                      <div class="offcanvas-body">
+                                        <b>Description:</b><br />
+                                        {task.description}
+                                      </div>
+                                    </div>
                                     <div className="card-body">
                                       <blockquote className="blockquote mb-0">
                                         <p>{task.description.split(' ').slice(0, 5).join(' ')}...</p>
