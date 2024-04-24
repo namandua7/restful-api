@@ -11,6 +11,7 @@ export default function Boards() {
   const [boards, setBoards] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentBoardId, setCurrentBoardId] = useState(null);
+  const mode = localStorage.getItem('mode');
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -35,6 +36,12 @@ export default function Boards() {
         { title, description, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name }
       );
       console.log(response.data);
+      const updateProjectTaskCount = await axios.put(
+        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}`,
+        { tasks_count: JSON.parse(localStorage.getItem('project')).tasks_count + 1 }
+      )
+      localStorage.setItem('project', JSON.stringify(updateProjectTaskCount.data));
+      console.log(updateProjectTaskCount.data);
       setShowModal(false);
       setTitle('');
       setDescription('');
@@ -114,9 +121,12 @@ export default function Boards() {
 
   return (
     <>
-      <Link to={`/projects/${projectId}/boards/new`}>
-        <button type="button" className="mx-3 my-4 mr-5 btn btn-primary">+ New</button>
-      </Link>
+      <div className="d-flex align-items-center justify-content-center">
+        <Link to={`/projects/${projectId}/boards/new`} className="mr-auto">
+          <button type="button" className="mx-3 my-4 btn btn-primary">+ New</button>
+        </Link>
+        <h1 style={{ margin: "0 auto" }} className={`text-center text-${mode==='light'?'dark':'light'}`}>{JSON.parse(localStorage.getItem('project')).name}</h1>
+      </div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="row mx-4">
           {boards.map((board, index) => (
@@ -161,7 +171,7 @@ export default function Boards() {
                         <button type="button" className="btn-close cross-to-plus" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setCurrentBoardId(board.id)}></button>
                       </div>
                       {board.tasks && (
-                        <div className="overflow-auto">
+                        <div className="overflow-scroll" style={{ maxHeight: '640px', overflowY: 'auto' }}>
                           {board.tasks.map((task, index) => (
                             <Draggable draggableId={task.id.toString()} index={index} key={task.id}>
                               {(provided) => (
@@ -170,7 +180,7 @@ export default function Boards() {
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
-                                  <div className="card mb-3">
+                                  <div className="card mb-3 mx-2">
                                     <b><div className="card-header">{task.title}</div></b>
                                     <div className="card-body">
                                       <blockquote className="blockquote mb-0">
