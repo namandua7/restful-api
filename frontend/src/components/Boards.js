@@ -137,7 +137,7 @@ export default function Boards(props) {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <div className="card mb-4">
+                  <div className={`bg-${props.mode==='light'?'light':'black'} text-${props.mode==='light'?'dark':'light'} card mb-4`}>
                     <div className="card-body">
                       <h3 className="card-title">{board.status}</h3>
                       <p className="card-text">{board.description}</p>
@@ -171,7 +171,7 @@ export default function Boards(props) {
                         <button type="button" className="btn-close cross-to-plus" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setCurrentBoardId(board.id)}></button>
                       </div>
                       {board.tasks && (
-                        <div className="overflow-scroll" style={{ maxHeight: '640px', overflowY: 'auto' }}>
+                        <div className="overflow-auto" style={{ height: '640px' }}>
                           {board.tasks.map((task, index) => (
                             <>
                             <Draggable draggableId={task.id.toString()} index={index} key={task.id}>
@@ -181,8 +181,8 @@ export default function Boards(props) {
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
-                                  <div className="card mb-3 mx-2">
-                                  <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><b><div className="card-header">{task.title}</div></b></Link>
+                                  <div className={`bg-${props.mode === 'light' ? 'light' : 'dark'} text-${props.mode === 'light' ? 'dark' : 'light'} card mb-3 mx-2`}>
+                                  <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><b><div className={`card-header text-${props.mode === 'light' ? 'dark' : 'light'}`}>{task.title}</div></b></Link>
                                     <div className="card-body">
                                       <blockquote className="blockquote mb-0">
                                         <p>{task.description.split(' ').slice(0, 5).join(' ')}...</p>
