@@ -42,10 +42,12 @@ export default function Navbar(props) {
             <input className="form-check-input" type="checkbox" role="switch" checked={props.mode === 'dark'} onClick={props.toggleMode} id="flexSwitchCheckChecked" />
             <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Dark mode</label>
           </div>
-          <form className="d-flex mx-4" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button className="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          {window.location.pathname === "/projects" && (
+            <form className="d-flex mx-4" role="search">
+              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+              <button className="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          )}
           {props.isLoggedIn ? (
               <p className={`mx-4 my-2 text-${props.mode === 'dark' ? 'light' : 'dark'}`}>{JSON.parse(localStorage.getItem('user')).name}</p>
             ) : (
