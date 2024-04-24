@@ -173,6 +173,7 @@ export default function Boards(props) {
                       {board.tasks && (
                         <div className="overflow-scroll" style={{ maxHeight: '640px', overflowY: 'auto' }}>
                           {board.tasks.map((task, index) => (
+                            <>
                             <Draggable draggableId={task.id.toString()} index={index} key={task.id}>
                               {(provided) => (
                                 <div
@@ -182,16 +183,6 @@ export default function Boards(props) {
                                 >
                                   <div className="card mb-3 mx-2">
                                   <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><b><div className="card-header">{task.title}</div></b></Link>
-                                    <div class="offcanvas offcanvas-end w-50" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                                      <div class="offcanvas-header">
-                                        <h5 class="offcanvas-title" id="offcanvasRightLabel">{task.title}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                      </div>
-                                      <div class="offcanvas-body">
-                                        <b>Description:</b><br />
-                                        {task.description}
-                                      </div>
-                                    </div>
                                     <div className="card-body">
                                       <blockquote className="blockquote mb-0">
                                         <p>{task.description.split(' ').slice(0, 5).join(' ')}...</p>
@@ -202,6 +193,27 @@ export default function Boards(props) {
                                 </div>
                               )}
                             </Draggable>
+                            <div className={`bg-${props.mode === 'light' ? 'light' : 'dark'} text-${props.mode === 'light' ? 'dark' : 'light'} mt-5 offcanvas offcanvas-end w-50`} tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                              <div className="offcanvas-header">
+                                <h5 className="offcanvas-title" id="offcanvasRightLabel">{task.title}</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                              </div>
+                              <div className="offcanvas-body">
+                                <b>Description:</b><br />
+                                {task.description} <br />
+                                <b>Deadline:</b><br />
+                                {new Date(task.deadline).toLocaleString('en-GB', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                    hour12: true
+                                })}
+                              </div>
+                            </div>
+                            </>
                           ))}
                         </div>
                       )}
