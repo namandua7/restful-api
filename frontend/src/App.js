@@ -37,7 +37,7 @@ function App() {
   const toggleMode = () => {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
-  const backgroundImageUrl = 'src/images/Blue Dark Professional Geometric Business Project Presentation .jpg';
+
   return (
     <>
       <Router>
