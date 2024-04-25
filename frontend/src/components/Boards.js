@@ -51,31 +51,6 @@ export default function Boards(props) {
     }
   };
 
-  useEffect(() => {
-    const fetchTasksForBoard = async (boardId) => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks`
-        );
-        const updatedBoards = boards.map(board => {
-          if (board.id === boardId) {
-            return { ...board, tasks: response.data };
-          }
-          return board;
-        });
-        setBoards(updatedBoards);
-      } catch (error) {
-        console.error(`Error fetching tasks for board ${boardId}:`, error);
-      }
-    };
-
-    boards.forEach(board => {
-      if (!board.tasks) {
-        fetchTasksForBoard(board.id);
-      }
-    });
-  }, [boards, projectId, user_id]);
-
   const handleDragEnd = async (result) => {
     const { source, destination, draggableId } = result;
     if (!destination) return;
