@@ -9,3 +9,6 @@
 .cross-to-plus {
   transform: rotate(45deg);
 }
+.dropdown-toggle::after {
+  display: none !important;
+}

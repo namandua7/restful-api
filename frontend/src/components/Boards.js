@@ -12,6 +12,46 @@ export default function Boards(props) {
   const [showModal, setShowModal] = useState(false);
   const [currentBoardId, setCurrentBoardId] = useState(null);
   const [task, setTask] = useState('');
+  const [users, setUsers] = useState([]);
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:3000/api/v1/users'
+        );
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching boards:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  const handleDelete = async (boardId, id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`
+      );
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error deleting board:', error);
+    }
+  };
+
+  const handleEdit = async (boardId, id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`,
+        { title, description }
+      );
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating board:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -112,41 +152,15 @@ export default function Boards(props) {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <div className={`bg-${props.mode==='light'?'light':'black'} text-${props.mode==='light'?'dark':'light'} card mb-4`}>
-                    <div className="card-body">
+                  <div className={`bg-${props.mode==='light'?'light':'dark'} text-${props.mode==='light'?'dark':'light'} card mb-4`}>
+                    <div className={`card-body`}>
                       <h3 className="card-title">{board.status}</h3>
                       <p className="card-text">{board.description}</p>
-                      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={!showModal}>
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <form onSubmit={(e) => handleSubmit(e)}>
-                              <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="staticBackdropLabel">Create New Task</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div className="modal-body">
-                                <div className="mb-3">
-                                  <label htmlFor="title" className="form-label">Title</label>
-                                  <input type="text" className="form-control" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                                </div>
-                                <div className="mb-3">
-                                  <label htmlFor="description" className="form-label">Description</label>
-                                  <textarea className="form-control" id="description" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
-                                </div>
-                              </div>
-                              <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Create Task</button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="plus_container mb-2">
-                        <button type="button" className="btn-close cross-to-plus" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setCurrentBoardId(board.id)}></button>
+                      <div className={`plus_container mb-2`}>
+                        <button type="button" className={`btn-close cross-to-plus`} data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => setCurrentBoardId(board.id)}></button>
                       </div>
                       {board.tasks && (
-                        <div className="overflow-auto" style={{ height: '640px' }}>
+                        <div className="overflow-auto" style={{ maxHeight: '640px' }}>
                           {board.tasks.map((task, index) => (
                             <>
                             <Draggable draggableId={task.id.toString()} index={index} key={task.id}>
@@ -156,8 +170,19 @@ export default function Boards(props) {
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
-                                  <div className={`bg-${props.mode === 'light' ? 'light' : 'dark'} text-${props.mode === 'light' ? 'dark' : 'light'} card mb-3 mx-2`}>
-                                  <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" onClick={() => setTask(task)}><b><div className={`card-header text-${props.mode === 'light' ? 'dark' : 'light'}`}>{task.title}</div></b></Link>
+                                  <div
+                                    className={`bg-${props.mode === 'light' ? 'light' : 'black'} text-${props.mode === 'light' ? 'dark' : 'light'} card mb-3 mx-2`}
+                                  >
+                                    <div className={`dropdown plus_container`} style={{ color: 'aliceblue', position: 'absolute', right: '10px' }}>
+                                      <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <b>. . .</b>
+                                      </button>
+                                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><button className="btn dropdown-item" onClick={() => handleEdit(board.id, task.id)}>Edit</button></li>
+                                        <li><button className="btn dropdown-item" onClick={() => handleDelete(board.id, task.id)}>Delete</button></li>
+                                      </ul>
+                                    </div>
+                                    <Link className='text-dark' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" onClick={() => setTask(task)}><b><div className={`card-header text-${props.mode === 'light' ? 'dark' : 'light'}`}>{task.title}</div></b></Link>
                                     <div className="card-body">
                                       <blockquote className="blockquote mb-0">
                                         <p>{task.description.split(' ').slice(0, 5).join(' ')}...</p>
@@ -182,15 +207,53 @@ export default function Boards(props) {
                           {task.description} <br />
                           <b>Deadline:</b><br />
                           {new Date(task.deadline).toLocaleString('en-GB', {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              second: '2-digit',
-                              hour12: true
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true
                           })}
+                          <div className="dropdown dropdown-menu-end">
+                            <button className={`btn dropdown-toggle text-${props.mode === 'light' ? 'dark' : 'light'}`} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <b>Assignees</b>
+                            </button>
+                            <ul className={`dropdown-menu dropdown-menu-${props.mode === 'light' ? 'light' : 'dark'} dropdown-menu-right`} style={{ position: 'absolute', right: '0' }}>
+                              {users.map(user => (
+                                <li key={user.id}>
+                                  <a className="dropdown-item" href="#">{user.name}</a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={!showModal}>
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                          <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Create New Task</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div className="modal-body">
+                            <div className="mb-3">
+                              <label htmlFor="title" className="form-label">Title</label>
+                              <input type="text" className="form-control" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="description" className="form-label">Description</label>
+                              <textarea className="form-control" id="description" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Create Task</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>

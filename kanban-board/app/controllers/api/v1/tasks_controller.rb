@@ -29,6 +29,12 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    render json: { message: 'Task deleted successfully' }
+  end
+
   private
 
   def task_params
