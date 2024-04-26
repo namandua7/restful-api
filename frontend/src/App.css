@@ -12,3 +12,6 @@
 .dropdown-toggle::after {
   display: none !important;
 }
+.changing-color {
+  color: aliceblue !important;
+}

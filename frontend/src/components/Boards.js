@@ -8,11 +8,14 @@ export default function Boards(props) {
   const user_id = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [deadline, setDeadline] = useState('');
   const [boards, setBoards] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentBoardId, setCurrentBoardId] = useState(null);
+  const [currentTaskId, setCurrentTaskId] = useState(null);
   const [task, setTask] = useState('');
   const [users, setUsers] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   
   useEffect(() => {
     const fetchUsers = async () => {
@@ -34,18 +37,29 @@ export default function Boards(props) {
         `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`
       );
       console.log(response.data);
+      const updateProjectTaskCount = await axios.put(
+        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}`,
+        { tasks_count: JSON.parse(localStorage.getItem('project')).tasks_count - 1 }
+      );
+      localStorage.setItem('project', JSON.stringify(updateProjectTaskCount.data));
       window.location.reload();
     } catch (error) {
       console.error('Error deleting board:', error);
     }
   };
 
-  const handleEdit = async (boardId, id) => {
+  const handleEdit = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`,
-        { title, description }
+        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks/${currentTaskId}`,
+        { title, description, deadline, board_id: currentBoardId }
       );
+      setTitle('');
+      setDescription('');
+      setDeadline('');
+      setCurrentBoardId(null);
+      setCurrentTaskId(null);
+      setIsEditMode(false);
       console.log(response.data);
       window.location.reload();
     } catch (error) {
@@ -73,7 +87,7 @@ export default function Boards(props) {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks`,
-        { title, description, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name }
+        { title, description, deadline, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name }
       );
       console.log(response.data);
       const updateProjectTaskCount = await axios.put(
@@ -85,6 +99,7 @@ export default function Boards(props) {
       setShowModal(false);
       setTitle('');
       setDescription('');
+      setDeadline('');
       window.location.reload();
     } catch (error) {
       console.error(`Error deleting board ${currentBoardId}:`, error);
@@ -175,10 +190,10 @@ export default function Boards(props) {
                                   >
                                     <div className={`dropdown plus_container`} style={{ color: 'aliceblue', position: 'absolute', right: '10px' }}>
                                       <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <b>. . .</b>
+                                        <b className={`${props.mode === 'light' ? '' : 'changing-color'} `}>. . .</b>
                                       </button>
                                       <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li><button className="btn dropdown-item" onClick={() => handleEdit(board.id, task.id)}>Edit</button></li>
+                                        <li><button type="button" className="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={() => {setTitle(task.title); setDescription(task.description); setIsEditMode(true); setCurrentBoardId(board.id); setCurrentTaskId(task.id)}}>Edit</button></li>
                                         <li><button className="btn dropdown-item" onClick={() => handleDelete(board.id, task.id)}>Delete</button></li>
                                       </ul>
                                     </div>
@@ -234,10 +249,10 @@ export default function Boards(props) {
                   <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={!showModal}>
                     <div className="modal-dialog">
                       <div className="modal-content">
-                        <form onSubmit={(e) => handleSubmit(e)}>
+                      <form onSubmit={(e) => (isEditMode ? handleEdit(e) : handleSubmit(e))}>
                           <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Create New Task</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">{isEditMode ? 'Edit Task' : 'Create Task'}</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => {setIsEditMode(false); setTitle(''); setDescription(''); setDeadline('');}}></button>
                           </div>
                           <div className="modal-body">
                             <div className="mb-3">
@@ -248,10 +263,14 @@ export default function Boards(props) {
                               <label htmlFor="description" className="form-label">Description</label>
                               <textarea className="form-control" id="description" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
                             </div>
+                            <div className="mb-3">
+                              <label htmlFor="deadline" className="form-label">Deadline</label>
+                              <input type="date" className="form-control" id="deadline" value={deadline} onChange={(e) => setDeadline(e.target.value)} required />
+                            </div>
                           </div>
                           <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Create Task</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setIsEditMode(false); setTitle(''); setDescription(''); setDeadline('');}}>Close</button>
+                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">{isEditMode ? 'Update' : 'Create'}</button>
                           </div>
                         </form>
                       </div>
