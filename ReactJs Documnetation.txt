@@ -1,0 +1,5 @@
+Best Structure of a ReactJs application should be:
+
+1. All components should be in Components folder.
+2. All Images should be in Images folder.
+3. All Routings should be in a file in pages folder.

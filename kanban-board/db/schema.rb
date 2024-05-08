@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_24_121122) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_26_121911) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_121122) do
     t.bigint "board_id", null: false
     t.string "created_by"
     t.datetime "deadline"
+    t.bigint "assignee_id"
+    t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
     t.index ["board_id"], name: "index_tasks_on_board_id"
   end
 
@@ -76,4 +78,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_121122) do
   add_foreign_key "boards", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "tasks", "boards"
+  add_foreign_key "tasks", "users", column: "assignee_id"
 end

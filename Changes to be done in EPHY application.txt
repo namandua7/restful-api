@@ -1,0 +1,31 @@
+Difference between fetch and axios for making http request
+
+Axios
+
+Axios uses the data property.
+Axios enjoys built-in XSRF protection.
+Axios allows cancelling request and request timeout.
+Axios performs automatic transforms of JSON data.
+Axios has the ability to intercept HTTP requests.
+Axios has wide browser support.
+Axios has built-in support for download progress.
+
+Fetch
+
+Fetch is built into most modern browsers; no installation is required as such.
+Fetch’s body has to be stringified.
+Fetch is a two-step process when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.
+Fetch, by default, doesn’t provide a way to intercept requests.
+Fetch does not support upload progress.
+Fetch only supports Chrome 42+, Firefox 39+, Edge 14+, and Safari 10.1+ (This is known as Backward Compatibility).
+
+
+Changes to be made in EPHY application:
+
+1. Based on above difference Axios is the efficient and useful way to call the API.
+
+2. Routing should be done in a proper file in components/pages folder.
+
+3. Remove the Templates folder and make only one folder namely components which contains the content of application.
+
+4. 

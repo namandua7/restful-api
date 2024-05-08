@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Select from 'react-select';
 
 export default function Boards(props) {
   const projectId = JSON.parse(localStorage.getItem('project')).id;
@@ -16,6 +17,7 @@ export default function Boards(props) {
   const [task, setTask] = useState('');
   const [users, setUsers] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedAssignees, setSelectedAssignees] = useState([]);
   
   useEffect(() => {
     const fetchUsers = async () => {
@@ -87,22 +89,19 @@ export default function Boards(props) {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks`,
-        { title, description, deadline, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name }
+        { title, description, deadline, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name, assignee_id: selectedAssignees }
       );
-      console.log(response.data);
-      const updateProjectTaskCount = await axios.put(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}`,
-        { tasks_count: JSON.parse(localStorage.getItem('project')).tasks_count + 1 }
-      )
-      localStorage.setItem('project', JSON.stringify(updateProjectTaskCount.data));
-      console.log(updateProjectTaskCount.data);
+      const updatedProject = JSON.parse(localStorage.getItem('project'));
+      updatedProject.tasks_count += 1;
+      localStorage.setItem('project', JSON.stringify(updatedProject));
       setShowModal(false);
       setTitle('');
       setDescription('');
       setDeadline('');
+      setSelectedAssignees([]);
       window.location.reload();
     } catch (error) {
-      console.error(`Error deleting board ${currentBoardId}:`, error);
+      console.error('Error creating task:', error);
     }
   };
 
@@ -267,7 +266,16 @@ export default function Boards(props) {
                               <label htmlFor="deadline" className="form-label">Deadline</label>
                               <input type="date" className="form-control" id="deadline" value={deadline} onChange={(e) => setDeadline(e.target.value)} required />
                             </div>
-                          </div>
+                            <div className="mb-3">
+                              <label htmlFor="assignee" className="form-label">Assignee</label>
+                              <Select
+                                isMulti
+                                options={users.map(user => ({ value: user.id, label: user.name }))}
+                                value={selectedAssignees}
+                                onChange={(selectedAssignees) => setSelectedAssignees(selectedAssignees)}
+                              />
+                            </div>
+                            </div>
                           <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setIsEditMode(false); setTitle(''); setDescription(''); setDeadline('');}}>Close</button>
                             <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">{isEditMode ? 'Update' : 'Create'}</button>
