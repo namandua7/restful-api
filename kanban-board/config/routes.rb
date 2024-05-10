@@ -17,6 +17,11 @@ Rails.application.routes.draw do
           end
         end
       end
+      resources :articles do
+        collection do
+          get 'search', to: 'articles#search'
+        end
+      end
     end
   end
 end
