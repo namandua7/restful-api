@@ -12,3 +12,18 @@ export const handleLogin = async (e, email, password) => {
     console.error('Error submitting form:', error);
   }
 };
+
+export const handleSearch = async (value) => {
+  try {
+    const response = await axios.get(`http://localhost:3001/api/v1/articles/search`, {
+      params: { q: value }
+    });
+    if (response.data.length === 0) {
+      return { title: '', desciption: "I don't have the answer of the given keyword" };
+    }
+    const { title, desciption } = response.data[0];
+    return { title, desciption };
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
