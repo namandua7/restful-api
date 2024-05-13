@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { handleSearch } from '../helpers';
 import '../styles/global.css';
 
@@ -6,6 +6,7 @@ export default function Chat() {
   const [value, setValue] = useState("");
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<{ title: string; desciption: string }[]>([]);
+  const [printedChunks, setPrintedChunks] = useState<string[]>([]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -17,8 +18,30 @@ export default function Chat() {
     setQuestions(prevQuestions => [...prevQuestions, value]);
     if (response) {
       setAnswers(prevAnswers => [...prevAnswers, response]);
+      printChunks(response.desciption);
     }
     setValue("");
+  };
+
+  const chunkArray = (str: string, chunkSize: number) => {
+    const chunks = [];
+    for (let i = 0; i < str.length; i += chunkSize) {
+      chunks.push(str.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
+  const printChunks = (description: string) => {
+    const chunkedArray = chunkArray(description, 10);
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < chunkedArray.length) {
+        setPrintedChunks(prevChunks => [...prevChunks, chunkedArray[index]]);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 500);
   };
 
   return (
@@ -35,8 +58,14 @@ export default function Chat() {
               {answers[index] && (
                 <>
                   <div>
-                    <h3>{answers[index].title}</h3>
-                    <p>{answers[index].desciption}</p>
+                    <h3>{answers[index]?.title}</h3>
+                    <p>
+                      {printedChunks.map((chunk, index) => (
+                        <React.Fragment key={index}>
+                          {chunk}
+                        </React.Fragment>
+                      ))}
+                    </p>
                   </div>
                 </>
               )}

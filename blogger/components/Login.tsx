@@ -11,7 +11,7 @@ export default function Login() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     handleLogin(e, email, password);
-    router.push('/about');
+    router.push('/chat');
   };
 
   return (
