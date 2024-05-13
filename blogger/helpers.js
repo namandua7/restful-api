@@ -27,3 +27,15 @@ export const handleSearch = async (value) => {
     console.error('Error submitting form:', error);
   }
 };
+
+export const handleArticleCreation = async (title, description, keyword) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3001/api/v1/articles',
+      { title, description, keyword }
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+}

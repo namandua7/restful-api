@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { handleSearch } from '../helpers';
 import '../styles/global.css';
+import { handleArticleCreation } from '../helpers';
 
 export default function Chat() {
   const [value, setValue] = useState("");
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<{ title: string; desciption: string }[]>([]);
   const [printedChunks, setPrintedChunks] = useState<string[]>([]);
+  const [keyword, setKeyword] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -44,9 +48,16 @@ export default function Chat() {
     }, 500);
   };
 
+  const handleNewArticle = async () => {
+    const response = await handleArticleCreation(title, description, keyword);
+    setKeyword("");
+    setTitle("");
+    setDescription("");
+  };
+
   return (
     <div style={{ height: "100vh" }}>
-      <button className="btn btn-primary mx-3 my-3">+ New</button>
+      <button type="button" className="btn btn-primary mx-3 my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+ New</button>
       <div className="container rounded-5 border border-3 d-flex flex-column justify-content-between h-75">
         <h2 className='text-center mt-4'>Which Article you want to read today?</h2>
         <div className="overflow-auto p-3">
@@ -75,17 +86,47 @@ export default function Chat() {
         <form onSubmit={handleSubmit}>
           <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
             <div className="input-group w-50 position-relative">
-              <input type="text" className="form-control my-3" placeholder='Ask anything' value={value} onChange={handleChange} />
+              <input type="text" className="form-control my-3 h-75" placeholder='Ask anything' value={value} onChange={handleChange} />
               {value && (
-                <button className="btn btn-primary position-absolute rounded-end" style={{ top: '50%', right: '0', transform: 'translateY(-50%)' }} type="submit">
+                <div style={{ position: "absolute", top: "16px", right: "0" }} className="my-4 mx-3">
+                  <button className="btn btn-primary position-absolute rounded-end" style={{ top: '50%', right: '0', transform: 'translateY(-50%)' }} type="submit">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
                   </svg>
                 </button>
+                </div>
               )}
             </div>
           </div>
         </form>
+      </div>
+      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="staticBackdropLabel">Create Article</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              <div className="mb-3">
+                <label htmlFor="exampleFormControlInput1" className="form-label">Title</label>
+                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
+                <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} placeholder='Description' onChange={(e) => setDescription(e.target.value)}></textarea>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleFormControlInput1" className="form-label">Keyword</label>
+                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Keyword" onChange={(e) => setKeyword(e.target.value)} />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleNewArticle}>Create</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
