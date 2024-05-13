@@ -110,15 +110,15 @@ export default function Chat() {
             <div className="modal-body">
               <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Title</label>
-                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
+                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-                <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} placeholder='Description' onChange={(e) => setDescription(e.target.value)}></textarea>
+                <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Keyword</label>
-                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Keyword" onChange={(e) => setKeyword(e.target.value)} />
+                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
               </div>
             </div>
             <div className="modal-footer">
