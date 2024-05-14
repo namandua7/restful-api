@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { handleSearch } from '../helpers';
 import '../styles/global.css';
 import { handleArticleCreation } from '../helpers';
@@ -12,6 +12,8 @@ export default function Chat() {
   const [keyword, setKeyword] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+
+  const printedChunksRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -51,6 +53,12 @@ export default function Chat() {
     }, 500);
   };
 
+  useEffect(() => {
+    if (printedChunksRef.current) {
+      printedChunksRef.current.scrollTop = printedChunksRef.current.scrollHeight;
+    }
+  }, [printedChunks]);
+
   const handleNewArticle = async () => {
     const response = await handleArticleCreation(title, description, keyword);
     setKeyword("");
@@ -63,7 +71,7 @@ export default function Chat() {
       <button type="button" className="btn btn-primary mx-3 my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+ New</button>
       <div className="container rounded-5 border border-3 d-flex flex-column justify-content-between h-75">
         {chatMode ? null : <h2 className='text-center mt-4'>Which Article you want to read today?</h2> }
-        <div className="overflow-auto p-3 mt-5">
+        <div className="overflow-auto p-3 mt-5" ref={printedChunksRef}>
           {questions.length >= 2 && questions.slice(0, -1).map((question, index) => (
             <div key={index} className="my-3">
               <div className="inline-flex flex-col w-auto my-3 border rounded-5">
