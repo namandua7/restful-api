@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { handleArticleCreation } from '../helpers';
 
 export default function Chat() {
+  const [chatMode, setChatMode] = useState(false);
   const [value, setValue] = useState("");
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<{ title: string; desciption: string }[]>([]);
@@ -20,11 +21,13 @@ export default function Chat() {
     e.preventDefault();
     const response = await handleSearch(value);
     setQuestions(prevQuestions => [...prevQuestions, value]);
+    setChatMode(true);
     if (response) {
-      setAnswers(prevAnswers => [...prevAnswers, response]);
       printChunks(response.desciption);
+      setAnswers(prevAnswers => [...prevAnswers, response]);
     }
     setValue("");
+    setPrintedChunks([]);
   };
 
   const chunkArray = (str: string, chunkSize: number) => {
@@ -37,7 +40,7 @@ export default function Chat() {
 
   const printChunks = (description: string) => {
     const chunkedArray = chunkArray(description, 10);
-    let index = 0;
+    let index = -1;
     const interval = setInterval(() => {
       if (index < chunkedArray.length) {
         setPrintedChunks(prevChunks => [...prevChunks, chunkedArray[index]]);
@@ -59,26 +62,39 @@ export default function Chat() {
     <div style={{ height: "100vh" }}>
       <button type="button" className="btn btn-primary mx-3 my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+ New</button>
       <div className="container rounded-5 border border-3 d-flex flex-column justify-content-between h-75">
-        <h2 className='text-center mt-4'>Which Article you want to read today?</h2>
-        <div className="overflow-auto p-3">
-          {questions.map((question, index) => (
+        {chatMode ? null : <h2 className='text-center mt-4'>Which Article you want to read today?</h2> }
+        <div className="overflow-auto p-3 mt-5">
+          {questions.length >= 2 && questions.slice(0, -1).map((question, index) => (
             <div key={index} className="my-3">
-              <div style={{ width: "auto" }} className="my-3 border rounded-5">
+              <div className="inline-flex flex-col w-auto my-3 border rounded-5">
                 <p style={{textAlign: "right", fontWeight: "bold", position: "relative", right: "30px", top: "8px"}}>{question}</p>
               </div>
               {answers[index] && (
                 <>
                   <div>
                     <h3>{answers[index]?.title}</h3>
-                    <p>
-                      {printedChunks.map((chunk, index) => (
-                        <React.Fragment key={index}>
-                          {chunk}
-                        </React.Fragment>
-                      ))}
-                    </p>
+                    <p>{answers[index]?.desciption}</p>
                   </div>
                 </>
+              )}
+            </div>
+          ))}
+          {questions.map((question, index) => (
+            <div key={index} className="my-3">
+              {index === questions.length - 1 && answers[index] && (
+                <div>
+                  <div style={{ width: "auto" }} className={`my-3 border rounded-5 ${index === questions.length - 1 ? "last-question" : ""}`}>
+                    <p style={{textAlign: "right", fontWeight: "bold", position: "relative", right: "30px", top: "8px"}}>{question}</p>
+                  </div>
+                  <h3>{answers[index]?.title}</h3>
+                  <p>
+                    {printedChunks.map((chunk, index) => (
+                      <React.Fragment key={index}>
+                        {chunk}
+                      </React.Fragment>
+                    ))}
+                  </p>
+                </div>
               )}
             </div>
           ))}
