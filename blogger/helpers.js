@@ -28,11 +28,11 @@ export const handleSearch = async (value) => {
   }
 };
 
-export const handleArticleCreation = async (title, description, keyword) => {
+export const handleArticleCreation = async (title, desciption, keyword) => {
   try {
     const response = await axios.post(
       'http://localhost:3001/api/v1/articles',
-      { title, description, keyword }
+      { title, desciption, keyword }
     );
     console.log(response.data);
   } catch (error) {

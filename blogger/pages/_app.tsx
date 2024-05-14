@@ -1,8 +1,10 @@
-// pages/_app.tsx
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useEffect } from 'react';
 
 function App({ Component, pageProps }: any) {
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
   return <Component {...pageProps} />;
 }
 

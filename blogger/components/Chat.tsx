@@ -85,12 +85,12 @@ export default function Chat() {
         </div>
         <form onSubmit={handleSubmit}>
           <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
-            <div className="input-group w-50 position-relative">
-              <input type="text" className="form-control my-3 h-75" placeholder='Ask anything' value={value} onChange={handleChange} />
+            <div className="input-group w-50 position-relative my-4">
+              <input type="text" className="form-control my-3 h-100" placeholder='Ask anything' value={value} onChange={handleChange} />
               {value && (
-                <div style={{ position: "absolute", top: "16px", right: "0" }} className="my-4 mx-3">
-                  <button className="btn btn-primary position-absolute rounded-end" style={{ top: '50%', right: '0', transform: 'translateY(-50%)' }} type="submit">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
+                <div style={{ position: "absolute", top: "25px", right: "0" }} className="my-4 mx-3">
+                  <button className="btn btn-primary rounded-end" style={{ width: "43px", height: "40px", top: '50%', transform: 'translateY(-50%)' }} type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="justify-content-center align-items-center d-flex rounded-end" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
                   </svg>
                 </button>
