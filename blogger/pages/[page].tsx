@@ -1,33 +1,40 @@
-import SignUp from '@/components/SignUp';
-import { useRouter } from 'next/router';
+import React from 'react';
 import Layout from '../components/Layout';
+import SignUp from '@/components/SignUp';
 import Login from '../components/Login';
 import Chat from '../components/Chat';
+import { useRouter } from 'next/router';
 
-export default function Page() {
+const Page = () => {
   const router = useRouter();
   const { page } = router.query;
 
   switch (page) {
     case 'sign-up':
       return (
-        <Layout title ='Sign Up'>
+        <Layout>
           <SignUp />
         </Layout>
       );
     case 'login':
       return (
-        <Layout title='Log in'>
+        <Layout>
           <Login />
         </Layout>
-      )
+      );
     case 'chat':
       return (
         <Layout title='Chat'>
           <Chat />
         </Layout>
-      )
+      );
     default:
-      return <p>Page not found</p>;
+      return (
+        <Layout>
+          <p>Page not found</p>
+        </Layout>
+      );
   }
 }
+
+export default Page;

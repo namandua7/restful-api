@@ -68,8 +68,7 @@ export default function Chat() {
 
   return (
     <div>
-      <button type="button" className="btn btn-primary mx-5 my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+ New</button>
-      <div className="container rounded-5 border border-3 d-flex flex-column justify-content-between" style={{height: "86vh"}}>
+      <div className="container w-100 rounded-5 d-flex flex-column justify-content-between" style={{height: "100vh", marginLeft: "100px" }}>
         {chatMode ? null : <h2 className='text-center mt-4'>Which Article you want to read today?</h2> }
         <div className="overflow-auto p-3 mt-5" ref={printedChunksRef}>
           {questions.length >= 2 && questions.slice(0, -1).map((question, index) => (

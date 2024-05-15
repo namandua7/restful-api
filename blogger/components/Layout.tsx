@@ -1,6 +1,6 @@
-import React from 'react'
-import Navbar from './Navbar';
+import React from 'react';
 import Head from 'next/head';
+import Sidebar from './Sidebar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,8 +13,12 @@ export default function Layout(props: LayoutProps) {
       <Head>
         <title>{props.title}</title>
       </Head>
-      <Navbar />
-      {props.children}
+      <div className='d-flex justify-content-center'>
+        <Sidebar />
+        <div className='position-absolute w-50'>
+          {props.children}
+        </div>
+      </div>
     </>
-  )
+  );
 }

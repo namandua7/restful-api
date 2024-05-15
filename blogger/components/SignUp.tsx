@@ -4,7 +4,7 @@ export default function SignUp() {
   return (
     <>
     <h1 className='text-center mt-3'>Sign Up</h1>
-    <div className="container my-5">
+    <div className='container my-5'>
       <div className="mb-3">
         <label htmlFor="exampleFormControlInput1" className="form-label">Name</label>
         <input className="form-control" id="exampleFormControlInput1" placeholder="Name" />
