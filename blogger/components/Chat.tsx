@@ -41,7 +41,7 @@ export default function Chat() {
   };
 
   const printChunks = (description: string) => {
-    const chunkedArray = chunkArray(description, 10);
+    const chunkedArray = chunkArray(description, 15);
     let index = -1;
     const interval = setInterval(() => {
       if (index < chunkedArray.length) {
@@ -50,7 +50,7 @@ export default function Chat() {
       } else {
         clearInterval(interval);
       }
-    }, 500);
+    }, 300);
   };
 
   useEffect(() => {
@@ -108,8 +108,8 @@ export default function Chat() {
         </div>
         <form onSubmit={handleSubmit}>
           <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
-            <div className="input-group w-50 position-relative my-4">
-              <input type="text" className="form-control my-3 h-100" placeholder='Ask anything' value={value} onChange={handleChange} />
+            <div className="w-75 position-relative my-4">
+              <input type="text" className="border border-black form-control my-3 h-100" placeholder='Ask anything' value={value} onChange={handleChange} />
               {value && (
                 <div style={{ position: "absolute", top: "25px", right: "0" }} className="my-4 mx-3">
                   <button className="btn btn-primary rounded-end" style={{ width: "43px", height: "40px", top: '50%', transform: 'translateY(-50%)' }} type="submit">

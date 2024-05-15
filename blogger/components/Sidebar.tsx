@@ -22,10 +22,8 @@ export default function Sidebar() {
                   </a>
                 </li>
                 <li>
-                  <a href="#submenu1" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
-                    <span className="ms-1 d-none d-sm-inline new-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                      <i className="bi bi-plus-lg"></i>New
-                    </span>
+                  <a href="#submenu1" data-bs-toggle="modal" data-bs-target="#staticBackdrop" className="nav-link px-0 align-middle">
+                    <i className="bi bi-plus-lg"></i><span className="ms-1 d-none d-sm-inline">New</span>
                   </a>
                 </li>
                 <li>

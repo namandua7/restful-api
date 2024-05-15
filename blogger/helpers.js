@@ -19,7 +19,7 @@ export const handleSearch = async (value) => {
       params: { q: value }
     });
     if (response.data.length === 0) {
-      return { title: '', desciption: "I don't have the answer of the given keyword" };
+      return { title: '', desciption: "I don't have the answer of the given keyword." };
     }
     const { title, desciption } = response.data[0];
     return { title, desciption };
