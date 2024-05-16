@@ -39,3 +39,12 @@ export const handleArticleCreation = async (title, desciption, keyword) => {
     console.error('Error submitting form:', error);
   }
 }
+
+export const getArticleKeywords = async () => {
+  try {
+    const response = await axios.get('http://localhost:3001/api/v1/articles/');
+    return response.data;
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+}

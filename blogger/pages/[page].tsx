@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import SignUp from '@/components/SignUp';
 import Login from '../components/Login';
 import Chat from '../components/Chat';
+import Keyword from '../components/Keyword';
 import { useRouter } from 'next/router';
 
 const Page = () => {
@@ -10,17 +11,19 @@ const Page = () => {
   const { page } = router.query;
 
   switch (page) {
+    case 'keywords':
+      return (
+        <Layout title='Keywords'>
+          <Keyword />
+        </Layout>
+      )
     case 'sign-up':
       return (
-        <Layout>
-          <SignUp />
-        </Layout>
+        <SignUp />
       );
     case 'login':
       return (
-        <Layout>
-          <Login />
-        </Layout>
+        <Login />
       );
     case 'chat':
       return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { handleSearch } from '../helpers';
 import '../styles/global.css';
-import { handleArticleCreation } from '../helpers';
 
 export default function Chat() {
   const [chatMode, setChatMode] = useState(false);
@@ -9,10 +8,6 @@ export default function Chat() {
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<{ title: string; desciption: string }[]>([]);
   const [printedChunks, setPrintedChunks] = useState<string[]>([]);
-  const [keyword, setKeyword] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-
   const printedChunksRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +53,6 @@ export default function Chat() {
       printedChunksRef.current.scrollTop = printedChunksRef.current.scrollHeight;
     }
   }, [printedChunks]);
-
-  const handleNewArticle = async () => {
-    const response = await handleArticleCreation(title, description, keyword);
-    setKeyword("");
-    setTitle("");
-    setDescription("");
-  };
 
   return (
     <div>
@@ -122,34 +110,6 @@ export default function Chat() {
             </div>
           </div>
         </form>
-      </div>
-      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="staticBackdropLabel">Create Article</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="form-label">Title</label>
-                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-                <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="form-label">Keyword</label>
-                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleNewArticle}>Create</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
