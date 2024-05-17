@@ -28,4 +28,6 @@ Changes to be made in EPHY application:
 
 3. Remove the Templates folder and make only one folder namely components which contains the content of application.
 
-4. 
+4. Role.find_by(name: "Admin").id is an issue in ephy application
+
+5. Unpermitted parameter referral_code
