@@ -4,7 +4,7 @@ export const handleLogin = async (e, email, password) => {
   e.preventDefault();
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/v1/users/sign_in',
+      'http://localhost:3001/api/v1/users/sign_in',
       { email, password }
     );
     console.log(response.data);
@@ -47,4 +47,13 @@ export const getArticleKeywords = async () => {
   } catch (error) {
     console.error('Error submitting form:', error);
   }
+}
+
+export const handleLogout = () => {
+  try {
+    const response = axios.delete('http://localhost:3001/api/v1/users/sign_out');
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+  localStorage.removeItem('token');
 }

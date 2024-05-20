@@ -2,6 +2,8 @@ import { handleArticleCreation } from '@/helpers';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import ThemeChanger from './ThemeChanger';
+import { handleLogout } from '@/helpers';
+import { useRouter } from 'next/router';
 
 interface SidebarProps {
   theme?: string
@@ -9,6 +11,7 @@ interface SidebarProps {
 
 export default function Sidebar(props: SidebarProps) {
 
+  const router = useRouter();
   const [keyword, setKeyword] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -18,6 +21,11 @@ export default function Sidebar(props: SidebarProps) {
     setKeyword("");
     setTitle("");
     setDescription("");
+  };
+
+  const handleSignOut = async () => {
+    const response = handleLogout();
+    router.push('/login');
   };
 
   return (
@@ -61,7 +69,7 @@ export default function Sidebar(props: SidebarProps) {
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
-                  <li><a className="dropdown-item" href="#">Sign out</a></li>
+                  <li><a className="dropdown-item" href="#" onClick={handleSignOut}>Sign out</a></li>
                 </ul>
               </div>
               <ThemeChanger />
