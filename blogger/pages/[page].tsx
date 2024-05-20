@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
 import SignUp from '@/components/SignUp';
 import Login from '../components/Login';
 import Chat from '../components/Chat';
 import Keyword from '../components/Keyword';
 import { useRouter } from 'next/router';
+import { useTheme } from '../components/ThemeContext';
 
 const Page = () => {
   const router = useRouter();
   const { page } = router.query;
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      setTheme(savedTheme);
-    }
-  }, []);
+  const { theme } = useTheme();
 
   switch (page) {
     case 'keywords':

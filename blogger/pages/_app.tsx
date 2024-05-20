@@ -1,12 +1,18 @@
+import { AppProps } from 'next/app';
+import { ThemeProvider } from '../components/ThemeContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function App({ Component, pageProps }: any) {
+function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-  return <Component {...pageProps} />;
+  return (
+    <ThemeProvider>
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
 }
 
-export default App;
+export default MyApp;
