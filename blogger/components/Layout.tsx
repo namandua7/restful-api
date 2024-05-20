@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
+  theme?: string;
 }
 
 export default function Layout(props: LayoutProps) {
@@ -13,8 +14,8 @@ export default function Layout(props: LayoutProps) {
       <Head>
         <title>{props.title}</title>
       </Head>
-      <div className='d-flex justify-content-center'>
-        <Sidebar />
+      <div className={`d-flex justify-content-center`}>
+        <Sidebar theme={props.theme} />
         <div className='position-absolute w-50'>
           {props.children}
         </div>
