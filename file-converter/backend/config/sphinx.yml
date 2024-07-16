@@ -1,0 +1,4 @@
+development:
+  port: 9312
+  bin_path: /usr/local/bin
+  config_file: config/development.sphinx.conf

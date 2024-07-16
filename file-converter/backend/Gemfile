@@ -45,4 +45,7 @@ group :development do
   # gem "spring"
 end
 gem 'rack-cors'
+gem 'thinking-sphinx'
+gem 'pg_search'
+gem 'mysql2'
 
