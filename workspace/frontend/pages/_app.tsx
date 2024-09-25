@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
-    document.body.style.background = "#a49f9f";
+    document.body.style.backgroundColor = 'rgb(229, 225, 235)';
   })
   return (
     <Component {...pageProps} />

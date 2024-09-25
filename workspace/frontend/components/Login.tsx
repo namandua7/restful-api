@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { handleLogin } from '../helpers';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,7 +11,12 @@ export default function Login() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // Handle login logic here
+    try {
+      await handleLogin(email, password);
+      console.log('Login successful');
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
