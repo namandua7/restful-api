@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     try {
       await handleLogin(email, password);
-      console.log('Login successful');
+      router.push('/home');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
