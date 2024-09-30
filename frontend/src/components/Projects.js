@@ -19,7 +19,7 @@ export default function Projects(props) {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/v1/users/${user_id}/projects`, {
+      const response = await axios.get(`http://localhost:3001/api/v1/users/${user_id}/projects`, {
         params: {
           page: currentPage,
           per_page: projectsPerPage
@@ -33,7 +33,7 @@ export default function Projects(props) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`);
+      await axios.delete(`http://localhost:3001/api/v1/users/${user_id}/projects/${id}`);
       fetchProjects();
     } catch (error) {
       console.error('Error deleting project:', error);
@@ -41,7 +41,7 @@ export default function Projects(props) {
   };
 
   const handleUpdate = (id) => {
-    axios.get(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`)
+    axios.get(`http://localhost:3001/api/v1/users/${user_id}/projects/${id}`)
       .then(response => {
         localStorage.setItem('project', JSON.stringify(response.data));
         navigate(`/projects/${id}/edit`);
@@ -52,7 +52,7 @@ export default function Projects(props) {
   };
 
   const handleView = (id) => {
-    axios.get(`http://localhost:3000/api/v1/users/${user_id}/projects/${id}`)
+    axios.get(`http://localhost:3001/api/v1/users/${user_id}/projects/${id}`)
       .then(response => {
         localStorage.setItem('project', JSON.stringify(response.data));
         navigate(`/projects/${id}`);

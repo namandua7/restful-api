@@ -14,7 +14,7 @@ export default function NewBoard(props) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards`,
         { status, description, project_id: projectId }
       );
       console.log(response.data);

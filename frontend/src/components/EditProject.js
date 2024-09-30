@@ -14,7 +14,7 @@ export default function EditProject(props) {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${id}`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${id}`,
         { name, description, user_id }
       );
       console.log(response.data);

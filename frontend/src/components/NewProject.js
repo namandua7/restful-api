@@ -13,7 +13,7 @@ export default function NewProject(props) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/${user_id}/projects`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects`,
         { name, description, user_id }
       );
       console.log(response.data);

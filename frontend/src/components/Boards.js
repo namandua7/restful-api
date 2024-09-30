@@ -23,7 +23,7 @@ export default function Boards(props) {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/v1/users'
+          'http://localhost:3001/api/v1/users'
         );
         setUsers(response.data);
       } catch (error) {
@@ -36,11 +36,11 @@ export default function Boards(props) {
   const handleDelete = async (boardId, id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards/${boardId}/tasks/${id}`
       );
       console.log(response.data);
       const updateProjectTaskCount = await axios.put(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}`,
         { tasks_count: JSON.parse(localStorage.getItem('project')).tasks_count - 1 }
       );
       localStorage.setItem('project', JSON.stringify(updateProjectTaskCount.data));
@@ -53,7 +53,7 @@ export default function Boards(props) {
   const handleEdit = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks/${currentTaskId}`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks/${currentTaskId}`,
         { title, description, deadline, board_id: currentBoardId }
       );
       setTitle('');
@@ -73,7 +73,7 @@ export default function Boards(props) {
     const fetchBoards = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards`
+          `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards`
         );
         setBoards(response.data);
       } catch (error) {
@@ -88,7 +88,7 @@ export default function Boards(props) {
     if (!currentBoardId) return;
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks`,
+        `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards/${currentBoardId}/tasks`,
         { title, description, deadline, board_id: currentBoardId, created_by: JSON.parse(localStorage.getItem('user')).name, assignee_id: selectedAssignees }
       );
       const updatedProject = JSON.parse(localStorage.getItem('project'));
@@ -124,7 +124,7 @@ export default function Boards(props) {
     } else {
       try {
         await axios.put(
-          `http://localhost:3000/api/v1/users/${user_id}/projects/${projectId}/boards/${destination.droppableId}/tasks/${draggableId}`,
+          `http://localhost:3001/api/v1/users/${user_id}/projects/${projectId}/boards/${destination.droppableId}/tasks/${draggableId}`,
           { board_id: destination.droppableId }
         );
         const sourceBoard = boards.find(board => board.id.toString() === source.droppableId);
